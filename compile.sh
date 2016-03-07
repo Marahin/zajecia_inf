@@ -1,1 +1,1 @@
-g++ -std=c++11 -W -lncurses *.cpp -o output
+g++ -std=c++11 -Wall -lncurses *.cpp -o output
