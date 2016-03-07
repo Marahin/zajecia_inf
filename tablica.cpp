@@ -1,4 +1,6 @@
 #include "tablica.h"
+#include <cstdio>
+#include <iostream>
 
 Tablica2D::Tablica2D( int w, int h )
 :tbl_(nullptr), w_(w), h_(h)

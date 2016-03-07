@@ -7,8 +7,16 @@
 
 using namespace std;
 
-void draw( Tablica2D* map_obj ){
-  /* ... */
+void draw( Tablica2D * map ){
+  //cerr << "trying to draw" << endl;
+  clear();
+  move( 1, 1);
+  for( unsigned int x=0; x<( map->height() ); x++ ){
+    for( unsigned int y=0; y<( map->width()); y++){
+      //cerr << "trying to get data at (" << x << ", " << y << ")" << endl;
+      addch( map->get(x, y) );
+    }
+  }
 }
 
 Tablica2D* load_map(string filepath){
@@ -20,30 +28,27 @@ Tablica2D* load_map(string filepath){
   Tablica2D* map = new Tablica2D( width, height );
 
   /* temporary cell we get our input inside */
-  char tmp_cell; 
+  char tmp_cell;
 
   /* filling the map */
   for( unsigned int x=0; x<height; x++){
     for( unsigned int y=0; y<width; y++){
-      tmp_cell = getch();
+      fin >> tmp_cell;
       map->set(x, y, tmp_cell);
     }
   }
+
   fin.close();
+  return map;
 }
 
-
 int main( int argc, char* argv[]){
-  /* ncurses */
   initscr();
-  timeout(-1);
-  /* eo ncurses */
 
-  Tablica2D *map = load_map("map.txt");
+  
+  Tablica2D* map = load_map("map.txt");
   draw( map );
 
-  /* ncurses */
   endwin();
-  /* eo ncurses */
   return 0;
 }
