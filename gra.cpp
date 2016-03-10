@@ -1,52 +1,48 @@
 #include <cstdio>
 #include <iostream>
-#include <fstream>
 #include <ncurses.h>
 
 #include "tablica.h"
 
 using namespace std;
 
-void draw( Tablica2D * map ){
-  //cerr << "trying to draw" << endl;
-  clear();
-  move( 1, 1);
-  for( unsigned int x=0; x<( map->height() ); x++ ){
-    for( unsigned int y=0; y<( map->width()); y++){
-      //cerr << "trying to get data at (" << x << ", " << y << ")" << endl;
-      addch( map->get(x, y) );
-    }
-  }
-}
 
-Tablica2D* load_map(string filepath){
-  ifstream fin;
-  fin.open( filepath );
-  unsigned int width, height;
-  fin >> width >> height;
-  /* declaring new object of Tablica2D class */
-  Tablica2D* map = new Tablica2D( width, height );
+bool OPT_DBG_MODE;
 
-  /* temporary cell we get our input inside */
-  char tmp_cell;
-
-  /* filling the map */
-  for( unsigned int x=0; x<height; x++){
-    for( unsigned int y=0; y<width; y++){
-      fin >> tmp_cell;
-      map->set(x, y, tmp_cell);
-    }
-  }
-
-  fin.close();
-  return map;
+void debug(){
+  cerr << "CODES: " << endl;
+  cerr << "\
+  WALL " << WALL << endl << "\
+  FLOOR " << FLOOR << endl << "\
+  STAIRS_DOWN " << STAIRS_DOWN << endl << "\
+  STAIRS_UP " << STAIRS_UP << endl << "\
+  LOOT " << LOOT << endl << "\
+  MONSTER_RAT " << MONSTER_RAT << endl;
 }
 
 int main( int argc, char* argv[]){
-  initscr();
+  OPT_DBG_MODE = false;
+  /* getting the flags up */
+  for(int x=0; x<argc; x++){
+    if( string( argv[x] ) == "--debug" ){
+      OPT_DBG_MODE = true;
+    }
+  }
 
-  
+  if( OPT_DBG_MODE ){
+    debug();
+  }
+  /* end of flags, main program */
+
+
+
+  initscr();
+  noecho();
+  cbreak();   /* Line buffering disabled. pass on everything */
+  clear();
+
   Tablica2D* map = load_map("map.txt");
+  cerr << "drawing map" << endl;
   draw( map );
 
   endwin();
