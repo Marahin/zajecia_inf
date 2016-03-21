@@ -30,6 +30,7 @@ public:
   ~Tablica2D();
   unsigned int height();
   unsigned int width();
+  /* first parameter: height, second parameter: width */
   void set( unsigned int h, unsigned int w, unsigned int value );
   unsigned int get( unsigned int h, unsigned int w );
 private:

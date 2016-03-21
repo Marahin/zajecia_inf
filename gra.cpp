@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <ncurses.h>
-
+#include <unistd.h>
 #include "tablica.h"
 
 using namespace std;
@@ -34,17 +34,26 @@ int main( int argc, char* argv[]){
   }
   /* end of flags, main program */
 
-
-
   initscr();
   noecho();
   cbreak();   /* Line buffering disabled. pass on everything */
   clear();
 
   Tablica2D* map = load_map("map.txt");
-  cerr << "drawing map" << endl;
-  draw( map );
 
+  /* exit code - 0 if ok, -1 if something went bad */
+  unsigned int EXIT_CODE = 0;
+  if( map != nullptr){
+    cerr << "drawing map " << endl;
+    draw( map );
+    while( getch() != 'q' ){
+
+    }
+  }
+  else{
+    EXIT_CODE = -1;
+  }
+  refresh();
   endwin();
-  return 0;
+  return EXIT_CODE;
 }
