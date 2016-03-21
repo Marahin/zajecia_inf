@@ -26,21 +26,21 @@ using namespace std;
 
 class Tablica2D{
 public:
-  Tablica2D(int w, int h);
+  Tablica2D(int columns, int rows);
   ~Tablica2D();
   unsigned int height();
   unsigned int width();
   /* first parameter: height, second parameter: width */
-  void set( unsigned int h, unsigned int w, unsigned int value );
-  unsigned int get( unsigned int h, unsigned int w );
+  void set( unsigned int row, unsigned int column, unsigned int value );
+  unsigned int get( unsigned int row, unsigned int column );
 private:
   /* do not copy objects that are not allowed to be copied */
   Tablica2D(const Tablica2D&);
   Tablica2D& operator = ( const Tablica2D& );
   /* .. */
   int ** tbl_;
-  unsigned int w_;
-  unsigned int h_;
+  unsigned int columns_;
+  unsigned int rows_;
 };
 
 

@@ -8,65 +8,62 @@
 using namespace std;
 
 
-Tablica2D::Tablica2D( int w, int h )
-:tbl_(nullptr), w_(w), h_(h)
+Tablica2D::Tablica2D( int rows, int columns )
+:tbl_(nullptr), columns_(columns), rows_(rows)
 {
-  tbl_ = new int* [h_];
-  for( unsigned int x=0; x< (unsigned int) h_; x++){
-    tbl_[x] = new int [w_];
+  tbl_ = new int* [rows_];
+  for( unsigned int x=0; x< (unsigned int) rows_; x++){
+    tbl_[x] = new int [columns_];
   }
 }
 
 Tablica2D::~Tablica2D(){
-  for( unsigned int x=0; x<( unsigned int ) h_; x++){
+  for( unsigned int x=0; x<( unsigned int ) rows_; x++){
     delete tbl_[x];
   }
   delete[] tbl_;
-  tbl_ = nullptr; w_ = h_ = 0;
+  tbl_ = nullptr; columns_ = rows_ = 0;
 }
 
 unsigned int Tablica2D::height(){
-  return h_;
+  return rows_;
 }
 
 unsigned int Tablica2D::width(){
-  return w_;
+  return columns_;
 }
 
-void Tablica2D::set(unsigned int height, unsigned int width, unsigned int value){
-  tbl_[ height ][ width ] = value;
+void Tablica2D::set(unsigned int row, unsigned int column, unsigned int value){
+  tbl_[ row ][ column ] = value;
 }
 
-unsigned int Tablica2D::get( unsigned int height, unsigned int width){
-  unsigned int value = tbl_[height][width];
+unsigned int Tablica2D::get( unsigned int row, unsigned int column){
+  unsigned int value = tbl_[row][column];
   return value;
 }
 
 void draw( Tablica2D * map ){
-  //mvaddch(1, 1, '.');
-  for( unsigned int x=0; x<( map->width() ); x++){
-    for( unsigned int y=0; y<( map->height() ); y++){
-      //printw("%c", (char) map->get(x, y) );
-      //mvaddch(x+1,y+1, (char) map->get(x, y));
-      //printf("%c", map->get(x, y));
-      mvaddch(x, y, (char) map->get(x, y));
-      usleep(1500);
+  cerr << "drawing map..." << endl;
+  for( unsigned int rows = 0; rows < map->height(); rows++ ){
+    for( unsigned int columns = 0; columns < map->width(); columns++){
+      mvaddch(rows, columns, (char) map->get(rows, columns));
       refresh();
+      usleep(3050);
     }
-    //printf("\n");
   }
+
   unsigned int x = 0; unsigned int y = 0;
-  find_entrance( map, x, y );
+  find_entrance(map, x, y);
   refresh();
 }
 
-bool isMapOk( Tablica2D *map, unsigned int width, unsigned int height){
+bool isMapOk( Tablica2D *map, unsigned int rows, unsigned int columns){
   unsigned int tmp_el = 0;
-  for( unsigned int y=0; y<width; y++){
-    for( unsigned int x=0; x<height; x++){
-      tmp_el = map->get(x, y);
+  for( unsigned int column=0; column<columns; column++){
+    for( unsigned int row=0; row<rows; row++){
+      tmp_el = map->get(row, column);
       if( tmp_el != WALL && tmp_el != FLOOR && tmp_el != STAIRS_DOWN && tmp_el != STAIRS_UP && tmp_el != LOOT && tmp_el != MONSTER_RAT ){
-        cerr << "ERR: the map has an unknown element at x: " << x << " and y: " << y << endl;
+        cerr << "Unknown element at: column " << column << ", row " << row << "(" << (char) tmp_el << ")" << endl;
         return false;
       }
     }
@@ -77,30 +74,30 @@ bool isMapOk( Tablica2D *map, unsigned int width, unsigned int height){
 Tablica2D* load_map(string filepath){
   ifstream fin;
   fin.open( filepath );
-  unsigned int width, height;
-  fin >> height >> width;
+  unsigned int columns, rows;
+  fin >> rows >> columns;
   /* declaring new object of Tablica2D class */
-  Tablica2D* map = new Tablica2D( width, height );
+  Tablica2D* map = new Tablica2D( rows, columns );
 
   /* temporary cell we get our input inside */
   char tmp_cell;
 
   /* debug */
-  cout << "DBG: MAP HEIGHT AND WIDTH: " << height << ", " << width << endl;
+  cout << "DBG: MAP rows AND columns: " << rows << ", " << columns << endl;
 
   /* filling the map */
-  for( unsigned int x=0; x<height; x++){
-    for( unsigned int y=0; y<width; y++){
+  for( unsigned int row=0; row<rows; row++){
+    for( unsigned int column=0; column<columns; column++){
       fin >> tmp_cell;
-      cerr << "DBG: setting " << x << ", "<< y << " to " << tmp_cell << endl;
-      map->set(x, y, tmp_cell);
+      cerr << "DBG: setting " << column << ", "<< row << " to " << tmp_cell << endl;
+      map->set(row, column, tmp_cell);
     }
     cerr << "DBG: done did setting map";
   }
 
   fin.close();
   cerr << "DBG: checking if map is ok";
-  if( isMapOk(map, width, height) ){
+  if( isMapOk(map, rows, columns) ){
     return map;
   }
   else{

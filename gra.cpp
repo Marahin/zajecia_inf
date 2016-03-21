@@ -46,8 +46,29 @@ int main( int argc, char* argv[]){
   if( map != nullptr){
     cerr << "drawing map " << endl;
     draw( map );
-    while( getch() != 'q' ){
 
+    unsigned int keycode;
+    while( true ){
+      keycode = getch();
+
+      if((char) keycode == 'q'){
+        break;
+      }
+      else{
+        if( keycode == 67 ){
+
+        }
+        else if( keycode == 66 ){
+
+        }
+        else if( keycode == 65){
+
+        }
+        else if( keycode == 68){
+
+        }
+        cout << "pressed code: " << keycode << endl;
+      }
     }
   }
   else{
