@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
-#include "tablica.h"
+#include "gamemap.h"
 #include "common.h"
 
 using namespace std;
