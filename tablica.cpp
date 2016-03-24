@@ -1,12 +1,8 @@
 #include "tablica.h"
-#include <cstdio>
-#include <iostream>
+#include "common.h"
 #include <fstream>
 #include <unistd.h>
-
 #include <ncurses.h>
-using namespace std;
-
 
 Tablica2D::Tablica2D( int rows, int columns )
 :tbl_(nullptr), columns_(columns), rows_(rows)
@@ -43,7 +39,9 @@ unsigned int Tablica2D::get( unsigned int row, unsigned int column){
 }
 
 void draw( Tablica2D * map ){
-  cerr << "drawing map..." << endl;
+  if( OPT_DBG_MODE ){
+    cerr << "drawing map..." << endl;
+  }
   for( unsigned int rows = 0; rows < map->height(); rows++ ){
     for( unsigned int columns = 0; columns < map->width(); columns++){
       mvaddch(rows, columns, (char) map->get(rows, columns));
@@ -83,25 +81,38 @@ Tablica2D* load_map(string filepath){
   char tmp_cell;
 
   /* debug */
-  cout << "DBG: MAP rows AND columns: " << rows << ", " << columns << endl;
+  if( OPT_DBG_MODE ){
+    cout << "DBG: MAP rows AND columns: " << rows << ", " << columns << endl;
+  }
 
   /* filling the map */
   for( unsigned int row=0; row<rows; row++){
     for( unsigned int column=0; column<columns; column++){
       fin >> tmp_cell;
-      cerr << "DBG: setting " << column << ", "<< row << " to " << tmp_cell << endl;
+      if( OPT_DBG_MODE ){
+        cerr << "DBG: setting " << column << ", "<< row << " to " << tmp_cell << endl;
+      }
       map->set(row, column, tmp_cell);
     }
-    cerr << "DBG: done did setting map";
+    if( OPT_DBG_MODE ){
+      cerr << "DBG: done did setting map";
+    }
   }
 
   fin.close();
-  cerr << "DBG: checking if map is ok";
+  if( OPT_DBG_MODE ){
+    cerr << "DBG: checking if map is ok" << endl;
+  }
   if( isMapOk(map, rows, columns) ){
+    if( OPT_DBG_MODE ){
+      cerr << "DBG: map is OK." << endl;
+    }
     return map;
   }
   else{
-    cerr << "ERR: map is not OK, returning nullpointer" << endl;
+    if( OPT_DBG_MODE ){
+      cerr << "ERR: map is not OK, returning nullpointer" << endl;
+    }
     return nullptr;
   }
 }
@@ -117,10 +128,10 @@ bool find_entrance(Tablica2D *map, unsigned int &tmp_pl_x, unsigned int &tmp_pl_
         // found entrance
         tmp_pl_x = x;
         tmp_pl_y = y;
-        /*
-        if( OPT_DBG_MODE ){ */
+
+        if( OPT_DBG_MODE ){
           cerr << endl << "found entrance at (" << x << ", " << y+2 << ")" << endl;
-        //}
+        }
         return true;
       }
     }

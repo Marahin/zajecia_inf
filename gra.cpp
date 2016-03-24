@@ -1,13 +1,13 @@
-#include <cstdio>
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
 #include "tablica.h"
+#include "common.h"
 
 using namespace std;
 
 
-bool OPT_DBG_MODE;
+bool OPT_DBG_MODE = false;
 
 void debug(){
   cerr << "CODES: " << endl;
@@ -19,6 +19,7 @@ void debug(){
   LOOT " << LOOT << endl << "\
   MONSTER_RAT " << MONSTER_RAT << endl;
 }
+
 
 int main( int argc, char* argv[]){
   OPT_DBG_MODE = false;
@@ -46,28 +47,17 @@ int main( int argc, char* argv[]){
   if( map != nullptr){
     cerr << "drawing map " << endl;
     draw( map );
-
-    unsigned int keycode;
     while( true ){
-      keycode = getch();
-
-      if((char) keycode == 'q'){
+      if( getch() == 'q'){
         break;
-      }
-      else{
-        if( keycode == 67 ){
+      } else if( true){
 
-        }
-        else if( keycode == 66 ){
+      } else if(true){
 
-        }
-        else if( keycode == 65){
+      } else if(true){
 
-        }
-        else if( keycode == 68){
-
-        }
-        cout << "pressed code: " << keycode << endl;
+      } else{
+        /* unknown command */
       }
     }
   }
