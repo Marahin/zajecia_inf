@@ -17,7 +17,7 @@
 #define KC_KEY_ESC NULL
 #define KC_KEY_Q 113
 
-static std::vector<unsigned int> ARROWKEY_INITCODES = {27, 91};
+static const std::vector<unsigned int> ARROWKEY_INITCODES = {27, 91};
 bool codeInArrowKeyInitCodes(unsigned int keycode);
 
 #endif
