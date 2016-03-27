@@ -1,4 +1,4 @@
-#include "tablica.h"
+#include "gamemap.h"
 #include "common.h"
 #include <fstream>
 #include <unistd.h>

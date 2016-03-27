@@ -1,8 +1,11 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
+#include <sstream>
+
 #include "gamemap.h"
 #include "common.h"
+#include "keycodes.h"
 
 using namespace std;
 
@@ -47,18 +50,44 @@ int main( int argc, char* argv[]){
   if( map != nullptr){
     cerr << "drawing map " << endl;
     draw( map );
+
+    /* debug output stream */
+    stringstream kc_dbg_string_;
+
+    /* receiving the first touch! */
+    unsigned int keycode_ = getch();
+
+    /* main loop */
+
     while( true ){
-      if( getch() == 'q'){
+      kc_dbg_string_ << "Received ";
+      if( keycode_ == KC_KEY_ESC || keycode_ == KC_KEY_Q ){
         break;
-      } else if( true){
-
-      } else if(true){
-
-      } else if(true){
-
+      } else if( codeInArrowKeyInitCodes( keycode_ ) ){
+          /* code received is not the real key code */
+          /* so we have to access the next buffered value */
+          /* in order to get the real mvp value */
+          //keycode_ = getch();
+          kc_dbg_string_ << "GATEWAY KEYCODE ";
+      } else if( keycode_ == KC_KEY_W || keycode_ == KC_ARROWKEY_UP ){
+        kc_dbg_string_ << "key (UP) ";
+      } else if( keycode_ == KC_KEY_A || keycode_ == KC_ARROWKEY_LEFT){
+        kc_dbg_string_ << "key (LEFT) ";
+      } else if( keycode_ == KC_KEY_S || keycode_ == KC_ARROWKEY_DOWN){
+        kc_dbg_string_ << "key (DOWN) ";
+      } else if( keycode_ == KC_KEY_D || keycode_ == KC_ARROWKEY_RIGHT){
+        kc_dbg_string_ << "key (RIGHT) ";
       } else{
-        /* unknown command */
+        kc_dbg_string_ << "UNRECOGNIZED KEY ";
       }
+      kc_dbg_string_ << "(code: " << keycode_ << ").\n";
+      /* if the debug flag is passed - lets print that info out! */
+      if( OPT_DBG_MODE ){ cerr << kc_dbg_string_.str(); }
+      /* let's clear our info stream */
+      kc_dbg_string_.str( string() );
+
+      /* let's get our input back again! */
+      keycode_ = getch();
     }
   }
   else{
