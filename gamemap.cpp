@@ -1,5 +1,6 @@
 #include "gamemap.h"
 #include "common.h"
+
 #include <fstream>
 #include <unistd.h>
 #include <ncurses.h>
