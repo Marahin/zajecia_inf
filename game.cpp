@@ -3,15 +3,21 @@
 #include <unistd.h>
 #include <sstream>
 
-#include "gamemap.h"
 #include "common.h"
 #include "keycodes.h"
 #include "player.h"
+#include "interface.h"
+#include "gamemap.h"
 
+
+/* TODO: make the option parsing better. */
+/* currently it's made like you can see here... and below (TODO 2) */
 /* OPT_DBG_MODE defined in common.h, defined right here */
 bool OPT_DBG_MODE = false;
 
 int main( int argc, char* argv[]){
+
+  /* TODO (2): for more information look ^ */
   OPT_DBG_MODE = false;
   /* getting the flags up */
   for(int x=0; x<argc; x++){
@@ -23,8 +29,11 @@ int main( int argc, char* argv[]){
 
   initscr();
   noecho();
+  curs_set(FALSE); /* don't display the cursor */
   cbreak();   /* Line buffering disabled. pass on everything */
   clear();
+
+  interface_init();
 
   GameMap* map = load_map("map.txt");
 
@@ -36,7 +45,7 @@ int main( int argc, char* argv[]){
       EXIT_CODE = -1;
     } else{
       cerr << "drawing map " << endl;
-      draw( map );
+      //draw( map );
 
       /* debug output stream */
       stringstream kc_dbg_string_;
@@ -81,7 +90,7 @@ int main( int argc, char* argv[]){
   else{
     EXIT_CODE = -1;
   }
-  refresh();
+
   endwin();
   return EXIT_CODE;
 }
