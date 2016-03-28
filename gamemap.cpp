@@ -1,20 +1,21 @@
 #include "gamemap.h"
 #include "common.h"
+
 #include <fstream>
 #include <unistd.h>
 #include <ncurses.h>
 
-GameMap::GameMap( int rows, int columns )
+GameMap::GameMap( unsigned int rows, unsigned int columns )
 :tbl_(nullptr), columns_(columns), rows_(rows)
 {
   tbl_ = new int* [rows_];
-  for( unsigned int x=0; x< (unsigned int) rows_; x++){
+  for( unsigned int x=0; x< rows_; x++){
     tbl_[x] = new int [columns_];
   }
 }
 
 GameMap::~GameMap(){
-  for( unsigned int x=0; x<( unsigned int ) rows_; x++){
+  for( unsigned int x=0; x< rows_; x++){
     delete tbl_[x];
   }
   delete[] tbl_;

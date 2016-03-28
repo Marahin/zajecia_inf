@@ -26,7 +26,7 @@ using namespace std;
 
 class GameMap{
 public:
-  GameMap(int columns, int rows);
+  GameMap(unsigned int columns, unsigned int rows);
   ~GameMap();
   unsigned int height();
   unsigned int width();
