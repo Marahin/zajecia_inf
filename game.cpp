@@ -44,8 +44,8 @@ int main( int argc, char* argv[]){
     if( player == nullptr){
       EXIT_CODE = -1;
     } else{
-      cerr << "drawing map " << endl;
-      //draw( map );
+      if( OPT_DBG_MODE ){ cerr << "drawing map " << endl; }
+      draw( map );
 
       /* debug output stream */
       stringstream kc_dbg_string_;
